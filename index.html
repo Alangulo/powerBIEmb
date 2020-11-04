@@ -1,0 +1,101 @@
+<html>
+<head>
+	<title>
+		Embed in a single page Test
+	</title>
+	<style>
+        div {
+            height: 700px;
+            width: 1244px;
+        }
+    </style>
+</head>
+<body>
+<script>
+window.onload = function() {
+// Read embed application token from textbox
+    var txtAccessToken = "";
+
+// Read embed URL from textbox
+    var txtEmbedUrl = "";
+
+// Read report Id from textbox
+    var txtEmbedReportId = "";
+
+// Read embed type from radio
+//var tokenType = "AAD token"; 0: AAD token, 1: embed token.
+    var tokenType = 1;
+    
+// Get models. models contains enums that can be used.
+var models = window['powerbi-client'].models;
+
+// We give All permissions to demonstrate switching between View and Edit mode and saving report.
+var permissions = models.Permissions.All;
+
+// Embed configuration used to describe the what and how to embed.
+// This object is used when calling powerbi.embed.
+// This also includes settings and options such as filters.
+
+
+var config = {
+    type: 'report',
+    tokenType: tokenType == '0' ? models.TokenType.Aad : models.TokenType.Embed,
+    accessToken: txtAccessToken,
+    embedUrl: txtEmbedUrl,
+    id: txtEmbedReportId,
+    permissions: permissions,
+    settings: {
+      panes: {
+        filters: {
+          visible: true
+        },
+        pageNavigation: {
+          visible: true
+        }
+      }
+    }
+};
+
+
+var embedContainer = $('#container')[0];
+
+  var report = powerbi.embed(embedContainer, config);
+
+    report.on("loaded", function () {
+        console.log("loaded!");
+    });
+
+
+report.on("error", function(event) {
+    console.log(event.detail);
+    report.off("error");
+});
+
+report.off("saved");
+report.on("saved", function(event) {
+    console.log(event.detail);
+    if(event.detail.saveAs) {
+        console.logText('In order to interact with the new report, create a new token and load the new report');
+     }
+ })
+ }
+ </script>
+ <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/es6-promise/dist/es6-promise.js"></script>
+    <script src="../node_modules/powerbi-client/dist/powerbi.js"></script>
+
+    <script src="scripts/codesamples.js"></script>   
+    <script src="scripts/index.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/logger.js"></script>
+    <script src="scripts/session_utils.js"></script>
+    <script src="scripts/function_mapping.js"></script>
+    <script src="scripts/report.js"></script>  
+    <script src="scripts/step_samples.js"></script>
+    <script src="scripts/step_embed.js"></script>
+    <script src="scripts/step_interact.js"></script>
+    <script src="scripts/adal.min.js"></script>
+<div id = "container"></div>
+
+ </body>
+ </html>
