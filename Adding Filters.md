@@ -1,6 +1,7 @@
 # Adding Filters
 
 
+
 function _Report_SetFilters() {
     const filter = {
         $schema: "http://powerbi.com/product/schema#basic",
@@ -11,7 +12,7 @@ function _Report_SetFilters() {
         operator: "In",
         values: ["DILTIAZEM HCL"]
     };
-
+    
     // Get a reference to the embedded report HTML element
     var embedContainer = $('#embedContainer')[0];
 
@@ -30,7 +31,8 @@ function _Report_SetFilters() {
 }
     
  function _Embed_BasicEmbed() {
-    // Read embed application token from textbox
+   
+   // Read embed application token from textbox
     var txtAccessToken = $('#txtAccessToken').val();
 
     // Read embed URL from textbox
